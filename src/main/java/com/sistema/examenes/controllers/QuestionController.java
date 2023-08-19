@@ -47,6 +47,14 @@ public class QuestionController {
         return ResponseEntity.ok(questionExam);
     }
 
+    @GetMapping("/exam/all/{examId}")
+    public ResponseEntity<?> listExamQuestionAsAdministrator(@PathVariable("examId") Long examId){
+        Exam exam = new Exam();
+        exam.setId(examId);
+        Set<Question> questions = questionService.getQuestionForExam(exam);
+        return ResponseEntity.ok(questions);
+    }
+
     @GetMapping("/{questionId}")
     public Question getQuestion(@PathVariable("questionId") Long questionId){
         return questionService.getOnlyQuestion(questionId);
