@@ -1,11 +1,14 @@
 package com.sistema.examenes.controllers;
 
 
+import com.sistema.examenes.entities.Category;
 import com.sistema.examenes.entities.Exam;
 import com.sistema.examenes.services.impl.ExamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/exam")
@@ -29,6 +32,25 @@ public class ExamController {
     @GetMapping("/")
     public ResponseEntity<?> listExams(){
         return ResponseEntity.ok(examService.getExams());
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<Exam> listExamByCategory(@PathVariable("categoryId") Long categoryId){
+        Category category = new Category();
+        category.setId(categoryId);
+        return this.examService.listExamByCategory(category);
+    }
+
+    @GetMapping("/active")
+    public List<Exam> listExamsActive(){
+        return examService.getExamsActive();
+    }
+
+    @GetMapping("/category/active/{categoryId}")
+    public List<Exam> listExamsActiveByCategory(@PathVariable("categoryId") Long categoryId){
+        Category category = new Category();
+        category.setId(categoryId);
+        return examService.getExamsActiveByCategory(category);
     }
 
     @PutMapping("/")
