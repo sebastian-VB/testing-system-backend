@@ -27,6 +27,31 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.addQuestion(question));
     }
 
+    @PostMapping("/evaluate-exam")
+    public ResponseEntity<?> evaluateExam(@RequestBody List<Question> questions){
+
+        double maxPoints = 0;
+        Integer correctQuestion = 0;
+        Integer attempts = 0;
+
+        for(Question q: questions){
+            Question question = questionService.listQuestion(q.getId());
+            if(question.getAnswer().equals(q.getGivenAnswer())){
+                correctQuestion ++;
+                double points = Double.parseDouble(questions.get(0).getExam().getMaxPoints())/questions.size();
+                maxPoints ++;
+            }
+            if(q.getGivenAnswer() != null) attempts++;
+        }
+
+        Map<String, Object> answers = new HashMap<>();
+        answers.put("maxPoints", maxPoints);
+        answers.put("correctQuestion", correctQuestion);
+        answers.put("attempts", attempts);
+
+        return  ResponseEntity.ok(answers);
+    }
+
     @PutMapping("/")
     public ResponseEntity<Question> updateQuestion(@RequestBody Question question){
         return ResponseEntity.ok(questionService.updateQuestion(question));

@@ -17,6 +17,9 @@ public class Question {
     private String option4;
     private String answer;
 
+    @Transient
+    private String givenAnswer;
+
     @ManyToOne(
             fetch = FetchType.EAGER
     )
@@ -88,6 +91,14 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
+
+    public void setGivenAnswer(String givenAnswer) {
+        this.givenAnswer = givenAnswer;
     }
 
     public Exam getExam() {
